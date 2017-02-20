@@ -30,7 +30,7 @@ post '/' do
   
   intent = payload['request']['intent']
   
-  if (intent['name'] == "NameACountry") then
+  if (intent['name'] == "CountryFacts") then
     
     if (intent['slots']['CountryName']['value'] == "Sri Lanka") then
       puts "Got a request for CountryFacts for #{intent['slots']['CountryName']['value'].to_s}"
@@ -48,12 +48,19 @@ post '/' do
       }
       response['response']['shouldEndSession'] = true
     else
-      puts "Ask for help/ or contact the front desk!"
-    end
-    response.to_json.to_s
-    
+      response['response']["outputSpeech"] = {
+        "type" => "PlainText",
+        "text" => "Ask for help or contact the front desk"
+      }
+      response['response']['shouldEndSession'] = true
+      puts "invalid country requested: #{intent['slots']['CountryName']['value']}"
+    end    
 else
-  puts "Ask for help/ or contact the front desk!"
+  response['response']["outputSpeech"] = {
+    "type" => "PlainText",
+    "text" => "I did not understand your request, please try again"
+  }
+  puts "Invalid intent name"
 end
 response.to_json.to_s
 end
