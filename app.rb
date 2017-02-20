@@ -48,6 +48,7 @@ post '/' do
       }
       response['response']['shouldEndSession'] = true
     else
+      puts "invalid country requested: #{intent['slots']['CountryName']['value']}"
       response['response']["outputSpeech"] = {
         "type" => "PlainText",
         "text" => "Ask for help or contact the front desk"
